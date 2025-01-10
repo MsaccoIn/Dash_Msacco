@@ -48,11 +48,13 @@ if os.path.exists(file_path):
         st.subheader(f"Gráfico de {selected_metric} por Mês")
         fig, ax = plt.subplots()
         df['Mês'] = df['Mês'].astype(str)  # Garante que o eixo X seja tratado como string
+        df[selected_metric] = pd.to_numeric(df[selected_metric], errors='coerce')  # Converte a métrica para numérico
+
         df.plot(x='Mês', y=selected_metric, kind='line', ax=ax, marker='o', legend=False)
 
         # Adiciona os valores nos pontos
         for i, row in df.iterrows():
-            ax.text(row['Mês'], row[selected_metric], f"{row[selected_metric]:,.0f}", fontsize=8, ha='center', va='bottom')
+            ax.text(i, row[selected_metric], f"{row[selected_metric]:,.0f}", fontsize=8, ha='center', va='bottom')
 
         ax.set_title(f"{selected_metric} por Mês")
         ax.set_ylabel(selected_metric)
