@@ -46,19 +46,25 @@ if os.path.exists(file_path):
     # Gráfico da métrica selecionada
     if 'Mês' in df.columns and selected_metric in df.columns:
         st.subheader(f"Gráfico de {selected_metric} por Mês")
-        fig, ax = plt.subplots()
-        df['Mês'] = df['Mês'].astype(str)  # Garante que o eixo X seja tratado como string
-        df[selected_metric] = pd.to_numeric(df[selected_metric], errors='coerce')  # Converte a métrica para numérico
 
-        df.plot(x='Mês', y=selected_metric, kind='line', ax=ax, marker='o', legend=False)
+        try:
+            df['Mês'] = df['Mês'].astype(str)  # Garante que o eixo X seja tratado como string
+            df[selected_metric] = pd.to_numeric(df[selected_metric].replace({r'[^0-9.-]': ''}, regex=True), errors='coerce')  # Limpa e converte para numérico
 
-        # Adiciona os valores nos pontos
-        for i, row in df.iterrows():
-            ax.text(i, row[selected_metric], f"{row[selected_metric]:,.0f}", fontsize=8, ha='center', va='bottom')
+            fig, ax = plt.subplots()
+            df.plot(x='Mês', y=selected_metric, kind='line', ax=ax, marker='o', legend=False)
 
-        ax.set_title(f"{selected_metric} por Mês")
-        ax.set_ylabel(selected_metric)
-        ax.set_xlabel("Mês")
-        st.pyplot(fig)
+            # Adiciona os valores nos pontos
+            for i, row in df.iterrows():
+                if not pd.isnull(row[selected_metric]):
+                    ax.text(i, row[selected_metric], f"{row[selected_metric]:,.0f}", fontsize=8, ha='center', va='bottom')
+
+            ax.set_title(f"{selected_metric} por Mês")
+            ax.set_ylabel(selected_metric)
+            ax.set_xlabel("Mês")
+            st.pyplot(fig)
+
+        except Exception as e:
+            st.error(f"Erro ao gerar o gráfico: {e}")
 else:
     st.error("O arquivo base de dados consolidado não foi encontrado no repositório.")
