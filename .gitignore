@@ -1,0 +1,16 @@
+# Ignorar arquivos temporários do Excel
+~$*
+
+# Ignorar pastas temporárias
+.tmp.driveupload/
+
+# Ignorar versões antigas de arquivos
+*_Old
+
+# Ignorar arquivos .pyc e caches do Python
+*.pyc
+__pycache__/
+
+# Ignorar outros arquivos não necessários
+*.log
+*.tmp
