@@ -35,16 +35,9 @@ if os.path.exists(file_path):
 
     # Seleção de métrica para exibição gráfica
     st.subheader("Selecione a métrica para o gráfico")
-    metrics = [
-        'Sacas Entregues',
-        'Projeção Caminhões',
-        'Custo Médio Saca',
-        'Spread Médio',
-        'Lucro Bruto',
-        'Saldo Mensal',
-        'Custo Total'
-    ]
-    selected_metric = st.selectbox("Selecione a métrica:", [metric for metric in metrics if metric in df.columns])
+    # Identificar métricas disponíveis dinamicamente
+    available_metrics = [col for col in df.columns if col not in ['Mês']]
+    selected_metric = st.selectbox("Selecione a métrica:", available_metrics)
 
     # Gráfico da métrica selecionada
     if 'Mês' in df.columns and selected_metric in df.columns:
