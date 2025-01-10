@@ -30,13 +30,26 @@ if os.path.exists(file_path):
     st.subheader(f"Dados Consolidados - Aba: {selected_sheet}")
     st.dataframe(df)
 
-    # Gráfico de Sacas Entregues por Mês
-    st.subheader("Gráfico de Sacas Entregues por Mês")
-    if 'Mês' in df.columns and 'Sacas Entregues' in df.columns:
+    # Seleção de métrica para exibição gráfica
+    st.subheader("Selecione a métrica para o gráfico")
+    metrics = [
+        'Sacas Entregues',
+        'Projeção Caminhões',
+        'Custo Médio Saca',
+        'Spread Médio',
+        'Lucro Bruto',
+        'Saldo Mensal',
+        'Custo Total'
+    ]
+    selected_metric = st.selectbox("Selecione a métrica:", [metric for metric in metrics if metric in df.columns])
+
+    # Gráfico da métrica selecionada
+    if 'Mês' in df.columns and selected_metric in df.columns:
+        st.subheader(f"Gráfico de {selected_metric} por Mês")
         fig, ax = plt.subplots()
-        df.plot(x='Mês', y='Sacas Entregues', kind='bar', ax=ax, legend=False)
-        ax.set_title("Sacas Entregues por Mês")
-        ax.set_ylabel("Sacas Entregues")
+        df.plot(x='Mês', y=selected_metric, kind='line', ax=ax, marker='o', legend=False)
+        ax.set_title(f"{selected_metric} por Mês")
+        ax.set_ylabel(selected_metric)
         ax.set_xlabel("Mês")
         st.pyplot(fig)
 else:
