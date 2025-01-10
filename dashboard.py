@@ -3,10 +3,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-st.title("Dashboard Operacional")
+st.title("Dashboard MSacco")
 
 # Caminho para o arquivo base de dados consolidado
-file_path = "Base de dados Resumo_Operacional_Com_Graficos.xlsx"
+file_path = "Resumo_Operacional_Com_Graficos.xlsx"
 
 # Verifica se o arquivo existe
 if os.path.exists(file_path):
