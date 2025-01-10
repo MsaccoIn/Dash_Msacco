@@ -48,6 +48,11 @@ if os.path.exists(file_path):
         st.subheader(f"Gráfico de {selected_metric} por Mês")
         fig, ax = plt.subplots()
         df.plot(x='Mês', y=selected_metric, kind='line', ax=ax, marker='o', legend=False)
+
+        # Adiciona os valores nos pontos
+        for i, row in df.iterrows():
+            ax.text(row['Mês'], row[selected_metric], f"{row[selected_metric]:,.0f}", fontsize=8, ha='center', va='bottom')
+
         ax.set_title(f"{selected_metric} por Mês")
         ax.set_ylabel(selected_metric)
         ax.set_xlabel("Mês")
