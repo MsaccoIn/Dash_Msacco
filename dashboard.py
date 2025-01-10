@@ -24,7 +24,10 @@ if os.path.exists(file_path):
     columns_to_format = ['Vlr Médio Transporte', 'Lucro Bruto', 'Saldo Mensal', 'Custo Total']
     for col in columns_to_format:
         if col in df.columns:
-            df[col] = df[col].apply(lambda x: f"R$ {x:,.2f}" if pd.notnull(x) else x)
+            try:
+                df[col] = pd.to_numeric(df[col].replace({r'[^0-9.-]': ''}, regex=True), errors='coerce')
+            except Exception:
+                pass
 
     # Exibe os dados na tabela
     st.subheader(f"Dados Consolidados - Aba: {selected_sheet}")
@@ -49,7 +52,6 @@ if os.path.exists(file_path):
 
         try:
             df['Mês'] = df['Mês'].astype(str)  # Garante que o eixo X seja tratado como string
-            df[selected_metric] = pd.to_numeric(df[selected_metric].replace({r'[^0-9.-]': ''}, regex=True), errors='coerce')  # Limpa e converte para numérico
 
             fig, ax = plt.subplots()
             df.plot(x='Mês', y=selected_metric, kind='line', ax=ax, marker='o', legend=False)
