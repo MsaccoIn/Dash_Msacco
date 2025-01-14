@@ -1,0 +1,31 @@
+name: Monitor Updates
+
+on:
+  push:
+    paths:
+      - 'Resumo_Operacional_Com_Graficos.xlsx'  # Monitora mudanças neste arquivo específico
+  workflow_dispatch:  # Permite executar o workflow manualmente
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Etapa 1: Fazer checkout do repositório
+    - name: Checkout do código
+      uses: actions/checkout@v3
+
+    # Etapa 2: Configurar o Python
+    - name: Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    # Etapa 3: Instalar dependências
+    - name: Instalar dependências
+      run: |
+        pip install -r requirements.txt
+
+    # Etapa 4: Executar o monitor.py
+    - name: Executar monitor.py
+      run: python monitor.py
